@@ -30,6 +30,7 @@
     ]
    },
   "exports": {
-    ".": "./src/mod.ts"
+    ".": "./src/mod.ts",
+    "./main": "./src/main.ts"
   }
 }

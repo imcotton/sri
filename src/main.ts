@@ -98,7 +98,7 @@ export async function main ({
         args = argv.slice(2),
         print = console.log,
 
-} = {}) {
+} = {}): Promise<void> {
 
     const { url, algorithm, format, prefix, max_time } = parse(args);
 

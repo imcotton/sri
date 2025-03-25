@@ -1,65 +1,7 @@
-import { argv } from 'node:process';
-import { parseArgs } from 'node:util';
-
 import { encodeHex } from '@std/encoding/hex';
 import { encodeBase64 } from '@std/encoding/base64';
 
-import * as v from './valibot.ts';
-
 const { crypto: webcrypto } = globalThis;
-
-
-
-
-
-function parse (args: Iterable<string>) {
-
-    const { values, positionals } = parseArgs({
-
-        args: Array.from(args),
-
-        allowPositionals: true,
-
-        options: {
-
-            algorithm: {
-                type: 'string',
-                short: 'a',
-            },
-
-            format: {
-                type: 'string',
-                short: 'f',
-            },
-
-            'max-time': {
-                type: 'string',
-                short: 'm',
-            },
-
-            prefix: {
-                type: 'boolean',
-                short: 'p',
-            },
-
-        },
-
-    });
-
-    const { 'max-time': max_time, ...rest } = v.parse(v.object({
-
-        algorithm: v.optional(v.algorithm, '256'),
-        format: v.optional(v.format, 'base64'),
-        'max-time': v.optional(v.max_time, '10'),
-        prefix: v.optional(v.boolean(), false),
-
-    }), values);
-
-    const [ url ] = v.parse(v.tuple([ v.http_https ]), positionals);
-
-    return { ...rest, url, max_time };
-
-}
 
 
 
@@ -93,14 +35,24 @@ function encode (format: 'base64' | 'hex') {
 
 
 
-export async function main ({
+export interface Info {
+    url: string;
+    max_time: number;
+    algorithm: '1' | '256' | '384' | '512';
+    format: 'hex' | 'base64';
+    prefix: boolean;
+}
 
-        args = argv.slice(2),
+
+
+
+
+export async function main (
+
+        { url, algorithm, format, prefix, max_time }: Info,
         print = console.log,
 
-} = {}): Promise<void> {
-
-    const { url, algorithm, format, prefix, max_time } = parse(args);
+): Promise<void> {
 
     const res = await fetch(url, { signal: AbortSignal.timeout(max_time) });
 

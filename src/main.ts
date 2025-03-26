@@ -50,9 +50,8 @@ export interface Info {
 export async function main (
 
         { url, algorithm, format, prefix, max_time }: Info,
-        print = console.log,
 
-): Promise<void> {
+): Promise<string> {
 
     const res = await fetch(url, { signal: AbortSignal.timeout(max_time) });
 
@@ -69,10 +68,10 @@ export async function main (
     ;
 
     if (prefix) {
-        return print(algo.toLowerCase().replace('-', '').concat('-', output));
+        return algo.toLowerCase().replace('-', '').concat('-', output);
     }
 
-    print(output);
+    return output;
 
 }
 

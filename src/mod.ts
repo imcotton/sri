@@ -7,5 +7,5 @@ import { main } from './main.ts';
 
 
 
-await main(parse(argv.slice(2)));
+await main(parse(argv.slice(2))).then(console.log);
 

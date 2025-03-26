@@ -37,21 +37,25 @@ function encode (format: 'base64' | 'hex') {
 
 export interface Info {
     url: string;
-    max_time: number;
-    algorithm: '1' | '256' | '384' | '512';
-    format: 'hex' | 'base64';
-    prefix: boolean;
+    algorithm?: '1' | '256' | '384' | '512';
+    format?: 'hex' | 'base64';
+    max_time?: number;
+    prefix?: boolean;
 }
 
 
 
 
 
-export async function main (
+export async function main ({
 
-        { url, algorithm, format, prefix, max_time }: Info,
+        url,
+        algorithm = '256',
+        format = 'base64',
+        max_time = 10,
+        prefix = false,
 
-): Promise<string> {
+}: Info): Promise<string> {
 
     const res = await fetch(url, {
         signal: AbortSignal?.timeout(max_time * 1000),

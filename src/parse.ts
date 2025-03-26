@@ -43,16 +43,18 @@ export function parse (args: Iterable<string>): Info {
 
     const { 'max-time': max_time, ...rest } = v.parse(v.object({
 
-        algorithm: v.optional(v.algorithm, '256'),
-        format: v.optional(v.format, 'base64'),
-        'max-time': v.optional(v.max_time, '10'),
-        prefix: v.optional(v.boolean(), false),
+        algorithm: v.exactOptional(v.algorithm),
+        format: v.exactOptional(v.format),
+        'max-time': v.exactOptional(v.max_time),
+        prefix: v.exactOptional(v.boolean()),
 
     }), values);
 
     const [ url ] = v.parse(v.tuple([ v.http_https ]), positionals);
 
-    return { ...rest, url, max_time };
+    return max_time ? { ...rest, url, max_time }
+                    : { ...rest, url }
+    ;
 
 }
 

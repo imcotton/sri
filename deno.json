@@ -24,6 +24,7 @@
       "deno.json",
       "LICENSE.txt",
       "README.md",
+      "./tests",
       "./src"
     ],
     "exclude": [

@@ -8,6 +8,9 @@
     "@std/encoding": "jsr:@std/encoding@1",
     "valibot": "jsr:@valibot/valibot@1"
   },
+  "tasks": {
+    "test": "deno test --allow-net ./tests"
+  },
   "compilerOptions": {
     "noImplicitAny": true,
     "noUnusedLocals": true,

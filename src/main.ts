@@ -73,7 +73,7 @@ export async function main ({
         .then(encode(format))
     ;
 
-    if (prefix) {
+    if (prefix === true) {
         return algo.toLowerCase().replace('-', '').concat('-', output);
     }
 

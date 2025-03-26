@@ -53,7 +53,7 @@ export async function main (
 
 ): Promise<string> {
 
-    const res = await fetch(url, { signal: AbortSignal.timeout(max_time) });
+    const res = await fetch(url, { signal: AbortSignal?.timeout(max_time) });
 
     if (res.ok !== true) {
         await res.body?.cancel();

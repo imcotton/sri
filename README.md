@@ -10,7 +10,7 @@ generate **Subresource Integrity** (SRI)
 
 ```
 SYNOPSIS
-       <URL> [OPTIONS]
+       [OPTIONS] URL
 
 OPTIONS
        -a, --algorithm   SHA-n, one of: 1, 256 (default), 384, 512.

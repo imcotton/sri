@@ -8,7 +8,7 @@ generate **Subresource Integrity** (SRI)
 
 ## CLI
 
-```bash
+```
 SYNOPSIS
        <URL> [OPTIONS]
 

@@ -35,6 +35,6 @@ export const http_https = v.union([
 export const max_time = v.pipe(
     v.string(),
     v.digits(),
-    v.transform(d => Number.parseInt(d) * 1000),
+    v.transform(Number.parseInt),
 );
 

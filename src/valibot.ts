@@ -1,5 +1,5 @@
 import * as v from 'valibot';
-export *      from 'valibot';
+export * as default from 'valibot';
 
 
 

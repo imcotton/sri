@@ -36,10 +36,9 @@ function encode (format: 'base64' | 'hex') {
 
 
 export interface Info {
-    url: string;
+    task: () => Promise<BufferSource>;
     algorithm?: '1' | '256' | '384' | '512';
     format?: 'hex' | 'base64';
-    max_time?: number;
     prefix?: boolean;
 }
 
@@ -49,26 +48,16 @@ export interface Info {
 
 export async function main ({
 
-        url,
+        task,
         algorithm = '256',
         format = 'base64',
-        max_time = 10,
         prefix = false,
 
 }: Info): Promise<string> {
 
-    const res = await fetch(url, {
-        signal: AbortSignal?.timeout(max_time * 1000),
-    });
-
-    if (res.ok !== true) {
-        await res.body?.cancel();
-        throw new Error('error on fetch');
-    }
-
     const algo = `SHA-${ algorithm }`;
 
-    const output = await res.arrayBuffer()
+    const output = await task()
         .then(digest(algo))
         .then(encode(format))
     ;

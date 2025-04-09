@@ -1,6 +1,8 @@
 import * as ast from 'jsr:@std/assert@1';
 
 import { main } from '../src/main.ts';
+import { load_by } from '../src/parse.ts';
+import v from '../src/valibot.ts';
 
 
 
@@ -11,7 +13,9 @@ Deno.test('smoking npm:semver@7.7.1 -p -a 512', async function () {
     const url = 'https://registry.npmjs.org/semver/-/semver-7.7.1.tgz';
     const integrity = 'sha512-hlq8tAfn0m/61p4BVRcPzIGr6LKiMwo4VM6dGi6pt4qcRkmNzTcWq6eCEjEh+qXjkMDvPlOFFSGwQjoEa6gyMA==';
 
-    const res = await main({ url, algorithm: '512', prefix: true });
+    const task = load(url);
+
+    const res = await main({ task, algorithm: '512', prefix: true });
 
     ast.assertStrictEquals(res, integrity);
 
@@ -33,7 +37,9 @@ Deno.test('smoking npm:semver@7.7.1 -p -a 512 -f hex', async function () {
 
     `.replaceAll(/\W+/g, '');
 
-    const res = await main({ url, algorithm: '512', format: 'hex' });
+    const task = load(url);
+
+    const res = await main({ task, algorithm: '512', format: 'hex' });
 
     ast.assertStrictEquals(res, integrity);
 
@@ -47,7 +53,7 @@ Deno.test('error on fetch', async function () {
 
     try {
 
-        await main({ url: 'https://example.net/waaaat' });
+        await main({ task: load('https://example.net/waaaat') });
 
     } catch (e) {
 
@@ -56,4 +62,10 @@ Deno.test('error on fetch', async function () {
     }
 
 });
+
+
+
+
+
+const load = v.parser(load_by());
 

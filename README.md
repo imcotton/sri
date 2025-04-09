@@ -10,7 +10,7 @@ generate **Subresource Integrity** (SRI)
 
 ```
 SYNOPSIS
-       [OPTIONS] URL
+       [OPTIONS] remote URL, local file path, or from stdin
 
 OPTIONS
        -a, --algorithm   SHA-n, one of: 1, 256 (default), 384, 512.

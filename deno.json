@@ -9,7 +9,7 @@
     "valibot": "jsr:@valibot/valibot@1"
   },
   "tasks": {
-    "test": "deno test --allow-net ./tests"
+    "test": "deno test --allow-net --allow-read ./tests"
   },
   "compilerOptions": {
     "noImplicitAny": true,

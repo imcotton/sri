@@ -25,6 +25,29 @@ Deno.test('smoking npm:semver@7.7.1 -p -a 512', async function () {
 
 
 
+Deno.test('smoking npm:semver@7.7.1 -p -a 512 -f base58', async function () {
+
+    const url = 'https://registry.npmjs.org/semver/-/semver-7.7.1.tgz';
+
+    const integrity = `
+
+        3goJ6iN1JJsjXqeMd1CGHVD56zv3mRjy3zr5ct1ytDis
+        c3JNK8j5redEKHgeRtCvQ1wydViMr4E8mtzbZCVS1XYb
+
+    `.replaceAll(/\W+/g, '');
+
+    const task = load(url);
+
+    const res = await main({ task, algorithm: '512', format: 'base58' });
+
+    ast.assertStrictEquals(res, integrity);
+
+});
+
+
+
+
+
 Deno.test('smoking npm:semver@7.7.1 -p -a 512 -f hex', async function () {
 
     const url = 'https://registry.npmjs.org/semver/-/semver-7.7.1.tgz';

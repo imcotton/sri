@@ -15,7 +15,7 @@ export const algorithm = v.picklist(
 
 
 export const format = v.picklist(
-    [ 'hex', 'base64' ],
+    [ 'base64', 'base58', 'hex' ],
     'invalid format',
 );
 

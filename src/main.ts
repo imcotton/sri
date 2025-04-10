@@ -1,7 +1,3 @@
-import { encodeHex } from '@std/encoding/hex';
-import { encodeBase58 } from '@std/encoding/base58';
-import { encodeBase64 } from '@std/encoding/base64';
-
 const { crypto: webcrypto } = globalThis;
 
 
@@ -24,15 +20,29 @@ function digest (algorithm: string) {
 
 function encode (format: 'base64' | 'base58' | 'hex') {
 
-    if (format === 'base64') {
-        return encodeBase64;
-    }
+    return async function (source: ArrayBuffer) {
 
-    if (format === 'base58') {
-        return encodeBase58;
-    }
+        if (format === 'base64') {
 
-    return encodeHex;
+            const { encodeBase64 } = await import('@std/encoding/base64');
+
+            return encodeBase64(source);
+
+        }
+
+        if (format === 'base58') {
+
+            const { encodeBase58 } = await import('@std/encoding/base58');
+
+            return encodeBase58(source);
+
+        }
+
+        const { encodeHex } = await import('@std/encoding/hex');
+
+        return encodeHex(source);
+
+    };
 
 }
 

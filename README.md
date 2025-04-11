@@ -14,6 +14,7 @@ SYNOPSIS
 
 OPTIONS
        -a, --algorithm   SHA-n, one of: 1, 256 (default), 384, 512.
+       -c, --checksum    the checksum to be verified.
        -f, --format      base64 (default), base58, or hex.
        -m, --max-time    fetch maximum time in seconds (default 10).
        -p, --prefix      output the algorithm by prepending (default false).

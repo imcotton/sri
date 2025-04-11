@@ -41,6 +41,11 @@ export function parse (args: Iterable<string>): Info {
                 short: 'p',
             },
 
+            checksum: {
+                type: 'string',
+                short: 'c',
+            },
+
         },
 
     });
@@ -51,6 +56,7 @@ export function parse (args: Iterable<string>): Info {
         format:     v.exactOptional(w.format),
         'max-time': v.exactOptional(w.max_time),
         prefix:     v.exactOptional(v.boolean()),
+        checksum:   v.exactOptional(v.string()),
 
     }), values);
 

@@ -55,6 +55,7 @@ export interface Info {
     algorithm?: '1' | '256' | '384' | '512';
     format?: 'base64' | 'base58' | 'hex';
     prefix?: boolean;
+    checksum?: string;
 }
 
 
@@ -67,6 +68,7 @@ export async function main ({
         algorithm = '256',
         format = 'base64',
         prefix = false,
+        checksum,
 
 }: Info): Promise<string> {
 
@@ -76,6 +78,10 @@ export async function main ({
         .then(digest(algo))
         .then(encode(format))
     ;
+
+    if (checksum != null && output !== checksum) {
+        throw new Error('FAILED');
+    }
 
     if (prefix === true) {
         return algo.toLowerCase().replace('-', '').concat('-', output);

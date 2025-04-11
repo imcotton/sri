@@ -52,7 +52,7 @@ Deno.test('smoking npm:semver@7.7.1 -p -a 512 -f hex', async function () {
 
     const url = 'https://registry.npmjs.org/semver/-/semver-7.7.1.tgz';
 
-    const integrity = `
+    const checksum = `
 
         865abcb407e7d26ffad69e0155170fcc81abe8b2a2330a3854ce9d1a2ea9
         b78a9c46498dcd3716aba782123121faa5e390c0ef3e53851521b0423a04
@@ -62,9 +62,9 @@ Deno.test('smoking npm:semver@7.7.1 -p -a 512 -f hex', async function () {
 
     const task = load(url);
 
-    const res = await main({ task, algorithm: '512', format: 'hex' });
+    const res = await main({ task, checksum, algorithm: '512', format: 'hex' });
 
-    ast.assertStrictEquals(res, integrity);
+    ast.assertStrictEquals(res, checksum);
 
 });
 
@@ -81,6 +81,30 @@ Deno.test('error on fetch', async function () {
     } catch (e) {
 
         ast.assertIsError(e, Error, 'error on fetch');
+
+    }
+
+});
+
+
+
+
+
+Deno.test('checksum FAILED', async function () {
+
+    const sample = crypto.getRandomValues(new Uint8Array(42));
+
+    const task = () => Promise.resolve(sample);
+
+    const checksum = 'wat';
+
+    try {
+
+        await main({ task, checksum });
+
+    } catch (e) {
+
+        ast.assertIsError(e, Error, 'FAILED');
 
     }
 

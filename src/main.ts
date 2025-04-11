@@ -80,7 +80,7 @@ export async function main ({
     ;
 
     if (checksum != null && output !== checksum) {
-        throw new Error('FAILED');
+        throw new Error('FAILED', { cause: output });
     }
 
     if (prefix === true) {

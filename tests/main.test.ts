@@ -105,6 +105,7 @@ Deno.test('checksum FAILED', async function () {
     } catch (e) {
 
         ast.assertIsError(e, Error, 'FAILED');
+        ast.assert(typeof e.cause === 'string');
 
     }
 

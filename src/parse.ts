@@ -68,7 +68,7 @@ export function parse (args: Iterable<string>): Info {
 
 
 
-export function load_by (max_time = 10)  {
+export function load_by (max_time = 60)  {
 
     return v.pipe(
 

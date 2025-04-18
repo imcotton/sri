@@ -114,7 +114,6 @@ const from_stdin = v.pipe(
 
 const from_file = v.pipe(
     v.string(),
-    v.transform(pathToFileURL),
-    v.transform(url => () => readFile(url)),
+    v.transform(path => () => readFile(pathToFileURL(path))),
 );
 

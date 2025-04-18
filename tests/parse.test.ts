@@ -83,3 +83,17 @@ Deno.test('read from stdin', async function () {
 
 });
 
+
+
+
+
+Deno.test('format flags', function () {
+
+    ast.assertObjectMatch(parse([ '--hex' ]),    { format: 'hex' });
+    ast.assertObjectMatch(parse([ '--base58' ]), { format: 'base58' });
+    ast.assertObjectMatch(parse([ '--base64' ]), { format: 'base64' });
+
+    ast.assertThrows(() => parse([ '--base64', '--hex' ]));
+
+});
+

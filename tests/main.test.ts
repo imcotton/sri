@@ -25,7 +25,7 @@ Deno.test('smoking npm:semver@7.7.1 -p -a 512', async function () {
 
 
 
-Deno.test('smoking npm:semver@7.7.1 -p -a 512 -f base58', async function () {
+Deno.test('smoking npm:semver@7.7.1 -p -a 512 --base58', async function () {
 
     const url = 'https://registry.npmjs.org/semver/-/semver-7.7.1.tgz';
 
@@ -48,7 +48,7 @@ Deno.test('smoking npm:semver@7.7.1 -p -a 512 -f base58', async function () {
 
 
 
-Deno.test('smoking npm:semver@7.7.1 -p -a 512 -f hex', async function () {
+Deno.test('smoking npm:semver@7.7.1 -p -a 512 --hex', async function () {
 
     const url = 'https://registry.npmjs.org/semver/-/semver-7.7.1.tgz';
 

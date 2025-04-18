@@ -57,15 +57,39 @@ export function parse (args: Iterable<string>): Info {
 
     });
 
-    const { 'max-time': max_time, ...rest } = v.parse(v.object({
+    const { 'max-time': max_time, ...rest } = v.parse(v.pipe(
 
-        algorithm:  v.exactOptional(w.algorithm),
-        format:     v.exactOptional(w.format),
-        'max-time': v.exactOptional(w.max_time),
-        prefix:     v.exactOptional(v.boolean()),
-        checksum:   v.exactOptional(v.string()),
+        v.object({
 
-    }), values);
+            algorithm:  v.exactOptional(w.algorithm),
+            'max-time': v.exactOptional(w.max_time),
+            checksum:   v.exactOptional(v.string()),
+            prefix:     v.exactOptional(v.boolean()),
+            hex:        v.exactOptional(v.boolean()),
+            base58:     v.exactOptional(v.boolean()),
+            base64:     v.exactOptional(v.boolean()),
+
+        }),
+
+        v.check(function ({ hex, base58, base64 }) {
+
+            return [ hex, base58, base64 ].filter(Boolean).length < 2;
+
+        }, 'conflict between: --hex, --base58, --base64'),
+
+        v.transform(function ({ hex, base58, base64, ...rest }) {
+
+            const format =    hex ?    'hex' as const
+                         : base58 ? 'base58' as const
+                         : base64 ? 'base64' as const
+                         : void 0
+            ;
+
+            return format ? { ...rest, format } : rest;
+
+        }),
+
+    ), values);
 
     const [ task ] = v.parse(v.tuple([
 

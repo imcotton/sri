@@ -18,7 +18,7 @@ function digest (algorithm: string) {
 
 
 
-function encode (format: 'base64' | 'base58' | 'hex') {
+function encode (format: Format) {
 
     return async function (source: ArrayBuffer) {
 
@@ -50,10 +50,12 @@ function encode (format: 'base64' | 'base58' | 'hex') {
 
 
 
+export type Format = 'base64' | 'base58' | 'hex';
+
 export interface Info {
     task: () => Promise<BufferSource>;
     algorithm?: '1' | '256' | '384' | '512';
-    format?: 'base64' | 'base58' | 'hex';
+    format?: Format;
     prefix?: boolean;
     checksum?: string;
 }

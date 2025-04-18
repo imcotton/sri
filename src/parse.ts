@@ -26,14 +26,14 @@ export function parse (args: Iterable<string>): Info {
                 short: 'a',
             },
 
-            format: {
-                type: 'string',
-                short: 'f',
-            },
-
             'max-time': {
                 type: 'string',
                 short: 'm',
+            },
+
+            checksum: {
+                type: 'string',
+                short: 'c',
             },
 
             prefix: {
@@ -41,9 +41,16 @@ export function parse (args: Iterable<string>): Info {
                 short: 'p',
             },
 
-            checksum: {
-                type: 'string',
-                short: 'c',
+            hex: {
+                type: 'boolean',
+            },
+
+            base58: {
+                type: 'boolean',
+            },
+
+            base64: {
+                type: 'boolean',
             },
 
         },

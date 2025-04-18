@@ -5,7 +5,7 @@ import { readFile } from 'node:fs/promises';
 import { arrayBuffer } from 'node:stream/consumers';
 
 import v, * as w from './valibot.ts';
-import type { Info } from './main.ts';
+import type { Format, Info } from './main.ts';
 
 
 
@@ -13,11 +13,13 @@ import type { Info } from './main.ts';
 
 export function parse (args: Iterable<string>): Info {
 
-    const { values, positionals } = parseArgs({
+    const { values, positionals, tokens } = parseArgs({
 
         args: Array.from(args),
 
         allowPositionals: true,
+
+        tokens: true,
 
         options: {
 
@@ -57,7 +59,31 @@ export function parse (args: Iterable<string>): Info {
 
     });
 
-    const { 'max-time': max_time, ...rest } = v.parse(options, values);
+    const format = tokens.reduce(function (acc, token) {
+
+        if (token.kind === 'option') {
+
+            if (   token.name === 'base64'
+                || token.name === 'base58'
+                || token.name === 'hex'
+            ) {
+                return token.name;
+            }
+
+        }
+
+        return acc;
+
+    }, void 0 as Format | undefined);
+
+    const { 'max-time': max_time, ...rest } = v.parse(v.object({
+
+        algorithm:  v.exactOptional(w.algorithm),
+        'max-time': v.exactOptional(w.max_time),
+        checksum:   v.exactOptional(v.string()),
+        prefix:     v.exactOptional(v.boolean()),
+
+    }), values);
 
     const [ task ] = v.parse(v.tuple([
 
@@ -65,47 +91,11 @@ export function parse (args: Iterable<string>): Info {
 
     ]), positionals);
 
-    return { ...rest, task } ;
+    return format ? { ...rest, format, task }
+                  : { ...rest,         task }
+    ;
 
 }
-
-
-
-
-
-const options = v.pipe(
-
-    v.object({
-
-        algorithm:  v.exactOptional(w.algorithm),
-        'max-time': v.exactOptional(w.max_time),
-        checksum:   v.exactOptional(v.string()),
-        prefix:     v.exactOptional(v.boolean()),
-        hex:        v.exactOptional(v.boolean()),
-        base58:     v.exactOptional(v.boolean()),
-        base64:     v.exactOptional(v.boolean()),
-
-    }),
-
-    v.check(function ({ hex, base58, base64 }) {
-
-        return [ hex, base58, base64 ].filter(Boolean).length < 2;
-
-    }, 'conflict between: --hex, --base58, --base64'),
-
-    v.transform(function ({ hex, base58, base64, ...rest }) {
-
-        const format =    hex ?    'hex' as const
-                     : base58 ? 'base58' as const
-                     : base64 ? 'base64' as const
-                     : void 0
-        ;
-
-        return format ? { ...rest, format } : rest;
-
-    }),
-
-);
 
 
 

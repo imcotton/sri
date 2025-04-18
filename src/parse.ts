@@ -57,39 +57,7 @@ export function parse (args: Iterable<string>): Info {
 
     });
 
-    const { 'max-time': max_time, ...rest } = v.parse(v.pipe(
-
-        v.object({
-
-            algorithm:  v.exactOptional(w.algorithm),
-            'max-time': v.exactOptional(w.max_time),
-            checksum:   v.exactOptional(v.string()),
-            prefix:     v.exactOptional(v.boolean()),
-            hex:        v.exactOptional(v.boolean()),
-            base58:     v.exactOptional(v.boolean()),
-            base64:     v.exactOptional(v.boolean()),
-
-        }),
-
-        v.check(function ({ hex, base58, base64 }) {
-
-            return [ hex, base58, base64 ].filter(Boolean).length < 2;
-
-        }, 'conflict between: --hex, --base58, --base64'),
-
-        v.transform(function ({ hex, base58, base64, ...rest }) {
-
-            const format =    hex ?    'hex' as const
-                         : base58 ? 'base58' as const
-                         : base64 ? 'base64' as const
-                         : void 0
-            ;
-
-            return format ? { ...rest, format } : rest;
-
-        }),
-
-    ), values);
+    const { 'max-time': max_time, ...rest } = v.parse(options, values);
 
     const [ task ] = v.parse(v.tuple([
 
@@ -100,6 +68,44 @@ export function parse (args: Iterable<string>): Info {
     return { ...rest, task } ;
 
 }
+
+
+
+
+
+const options = v.pipe(
+
+    v.object({
+
+        algorithm:  v.exactOptional(w.algorithm),
+        'max-time': v.exactOptional(w.max_time),
+        checksum:   v.exactOptional(v.string()),
+        prefix:     v.exactOptional(v.boolean()),
+        hex:        v.exactOptional(v.boolean()),
+        base58:     v.exactOptional(v.boolean()),
+        base64:     v.exactOptional(v.boolean()),
+
+    }),
+
+    v.check(function ({ hex, base58, base64 }) {
+
+        return [ hex, base58, base64 ].filter(Boolean).length < 2;
+
+    }, 'conflict between: --hex, --base58, --base64'),
+
+    v.transform(function ({ hex, base58, base64, ...rest }) {
+
+        const format =    hex ?    'hex' as const
+                     : base58 ? 'base58' as const
+                     : base64 ? 'base64' as const
+                     : void 0
+        ;
+
+        return format ? { ...rest, format } : rest;
+
+    }),
+
+);
 
 
 

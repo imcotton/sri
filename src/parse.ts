@@ -87,7 +87,7 @@ export function parse (args: Iterable<string>): Info {
 
     const [ task ] = v.parse(v.tuple([
 
-        v.union([ load_by(max_time), from_file, from_stdin ]),
+        v.union([ load_by(max_time), from_stdin, from_file ]),
 
     ]), positionals);
 
@@ -131,7 +131,7 @@ export function load_by (max_time = 60)  {
 
 
 const from_stdin = v.pipe(
-    v.undefined(),
+    v.optional(v.literal('-')),
     v.transform(() => () => arrayBuffer(stdin)),
 );
 

@@ -10,17 +10,17 @@ generate **Subresource Integrity** (SRI)
 
 ```
 SYNOPSIS
-       [OPTIONS] remote URL, local file path, or from stdin
+       [OPTIONS] remote URL, local file path, or from stdin (-)
 
 OPTIONS
-       --hex
-       --base58
        --base64 (default)
+       --base58
+       --hex
 
        -a, --algorithm   SHA-n, one of: 1, 256 (default), 384, 512.
        -c, --checksum    the checksum to be verified.
        -m, --max-time    fetch maximum time in seconds (default 60).
-       -p, --prefix      output the algorithm by prepending (default false).
+       -p, --prefix      output the algorithm label (default false).
 ```
 
 

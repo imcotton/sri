@@ -1,5 +1,5 @@
 import { stdin } from 'node:process';
-import { parseArgs } from 'node:util';
+import { parseArgs, type ParseArgsConfig } from 'node:util';
 import { pathToFileURL } from 'node:url';
 import { readFile } from 'node:fs/promises';
 import { arrayBuffer } from 'node:stream/consumers';
@@ -19,49 +19,10 @@ export function parse (
 ): Info {
 
     const { values, positionals, tokens } = parseArgs({
-
         args: Array.from(args),
-
         allowPositionals: true,
-
         tokens: true,
-
-        options: {
-
-            algorithm: {
-                type: 'string',
-                short: 'a',
-            },
-
-            'max-time': {
-                type: 'string',
-                short: 'm',
-            },
-
-            checksum: {
-                type: 'string',
-                short: 'c',
-            },
-
-            prefix: {
-                type: 'boolean',
-                short: 'p',
-            },
-
-            hex: {
-                type: 'boolean',
-            },
-
-            base58: {
-                type: 'boolean',
-            },
-
-            base64: {
-                type: 'boolean',
-            },
-
-        },
-
+        options,
     });
 
     const format = tokens.reduce(function (acc, token) {
@@ -101,6 +62,46 @@ export function parse (
     ;
 
 }
+
+
+
+
+
+const options = {
+
+    algorithm: {
+        type: 'string',
+        short: 'a',
+    },
+
+    'max-time': {
+        type: 'string',
+        short: 'm',
+    },
+
+    checksum: {
+        type: 'string',
+        short: 'c',
+    },
+
+    prefix: {
+        type: 'boolean',
+        short: 'p',
+    },
+
+    hex: {
+        type: 'boolean',
+    },
+
+    base58: {
+        type: 'boolean',
+    },
+
+    base64: {
+        type: 'boolean',
+    },
+
+} satisfies ParseArgsConfig['options'];
 
 
 

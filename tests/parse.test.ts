@@ -69,17 +69,16 @@ Deno.test('read from stdin', async function () {
 
     const path = 'README.md';
 
-    const { task } = parse([]);
+    using source = await Deno.open(path, { read: true });
 
-    const [ node, deno ] = await Promise.all([
+    const [ s1, s2 ] = source.readable.tee();
 
-        task().then(v.parser(v.instance(ArrayBuffer))),
+    const { task: t1 } = parse([     ], s1);
+    const { task: t2 } = parse([ '-' ], s2);
 
-        Deno.readFile(path),
+    const [ r1, r2 ] = await Promise.all([ t1(), t2() ]);
 
-    ]);
-
-    ast.assertEquals(node, deno.buffer);
+    ast.assertEquals(r1, r2);
 
 });
 

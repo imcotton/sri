@@ -11,7 +11,12 @@ import type { Format, Info } from './main.ts';
 
 
 
-export function parse (args: Iterable<string>): Info {
+export function parse (
+
+        args: Iterable<string>,
+        input = stdin as AsyncIterable<Uint8Array<ArrayBuffer>>,
+
+): Info {
 
     const { values, positionals, tokens } = parseArgs({
 
@@ -87,7 +92,7 @@ export function parse (args: Iterable<string>): Info {
 
     const [ task ] = v.parse(v.tuple([
 
-        v.union([ load_by(max_time), from_stdin, from_file ]),
+        v.union([ load_by(max_time), from_standard(input), from_file ]),
 
     ]), positionals);
 
@@ -130,10 +135,14 @@ export function load_by (max_time = 60)  {
 
 
 
-const from_stdin = v.pipe(
-    v.optional(v.literal('-')),
-    v.transform(() => () => arrayBuffer(stdin)),
-);
+function from_standard (input: AsyncIterable<Uint8Array<ArrayBuffer>>) {
+
+    return v.pipe(
+        v.optional(v.literal('-')),
+        v.transform(() => () => arrayBuffer(input))
+    );
+
+}
 
 
 

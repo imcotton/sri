@@ -18,11 +18,28 @@ export function parse (
 ): Info {
 
     const { values, positionals, tokens } = parseArgs({
+
         args: Array.from(args),
         allowPositionals: true,
         tokens: true,
         options,
+
     });
+
+    const { 'max-time': max_time, ...rest } = v.parse(v.object({
+
+        algorithm:  v.exactOptional(w.algorithm),
+        'max-time': v.exactOptional(w.max_time),
+        checksum:   v.exactOptional(v.string()),
+        prefix:     v.exactOptional(v.boolean()),
+
+    }), values);
+
+    const [ task ] = v.parse(v.tuple([
+
+        v.union([ load_by(max_time), from_standard(input), from_file ]),
+
+    ]), positionals);
 
     const format = tokens.reduce(function (acc, token) {
 
@@ -40,21 +57,6 @@ export function parse (
         return acc;
 
     }, void 0 as Format | undefined);
-
-    const { 'max-time': max_time, ...rest } = v.parse(v.object({
-
-        algorithm:  v.exactOptional(w.algorithm),
-        'max-time': v.exactOptional(w.max_time),
-        checksum:   v.exactOptional(v.string()),
-        prefix:     v.exactOptional(v.boolean()),
-
-    }), values);
-
-    const [ task ] = v.parse(v.tuple([
-
-        v.union([ load_by(max_time), from_standard(input), from_file ]),
-
-    ]), positionals);
 
     return format ? { ...rest, format, task }
                   : { ...rest,         task }

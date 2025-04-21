@@ -86,6 +86,21 @@ Deno.test('read from stdin', async function () {
 
 
 
+Deno.test('read from stdin (required)', async function () {
+
+    await Promise.all([
+
+        ast.assertRejects(parse([     ]).task),
+        ast.assertRejects(parse([ '-' ]).task),
+
+    ]);
+
+});
+
+
+
+
+
 Deno.test('format flags', function () {
 
     ast.assertObjectMatch(parse([ '--hex' ]),    { format: 'hex' });

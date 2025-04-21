@@ -1,4 +1,3 @@
-import { stdin } from 'node:process';
 import { parseArgs, type ParseArgsConfig } from 'node:util';
 import { pathToFileURL } from 'node:url';
 import { readFile } from 'node:fs/promises';
@@ -14,7 +13,7 @@ import type { Format, Info } from './main.ts';
 export function parse (
 
         args: Iterable<string>,
-        input = stdin as AsyncIterable<Uint8Array<ArrayBuffer>>,
+        input?: AsyncIterable<Uint8Array<ArrayBuffer>>,
 
 ): Info {
 
@@ -136,11 +135,20 @@ export function load_by (max_time = 60)  {
 
 
 
-function from_standard (input: AsyncIterable<Uint8Array<ArrayBuffer>>) {
+function from_standard (input?: AsyncIterable<Uint8Array<ArrayBuffer>>) {
 
     return v.pipe(
+
         v.optional(v.literal('-')),
-        v.transform(() => () => arrayBuffer(input))
+
+        v.transform(() => async function () {
+
+            v.assert(w.exist(), input);
+
+            return await arrayBuffer(input);
+
+        }),
+
     );
 
 }

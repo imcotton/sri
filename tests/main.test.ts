@@ -74,15 +74,11 @@ Deno.test('smoking npm:semver@7.7.1 -p -a 512 --hex', async function () {
 
 Deno.test('error on fetch', async function () {
 
-    try {
-
-        await main({ task: load('https://example.net/waaaat') });
-
-    } catch (e) {
-
-        ast.assertIsError(e, Error, 'error on fetch');
-
-    }
+    await ast.assertRejects(
+        () => main({ task: load('https://example.net/waaaat') }),
+        Error,
+        'error on fetch',
+    );
 
 });
 

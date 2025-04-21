@@ -38,3 +38,13 @@ export const max_time = v.pipe(
     v.transform(Number.parseInt),
 );
 
+
+
+
+
+export function exist <T> () {
+
+    return v.custom<NonNullable<T>>(a => a != null);
+
+}
+

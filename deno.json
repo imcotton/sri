@@ -18,6 +18,10 @@
     "test": "deno test --allow-net --allow-read ./tests"
   },
   "compilerOptions": {
+    "lib": [
+      "dom",
+      "deno.window"
+    ],
     "noImplicitAny": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,

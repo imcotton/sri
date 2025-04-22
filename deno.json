@@ -48,6 +48,7 @@
    },
   "exports": {
     ".": "./src/mod.ts",
+    "./app.js": "./src/app.ts",
     "./main": "./src/main.ts"
   }
 }

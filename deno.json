@@ -6,6 +6,7 @@
   "lock": false,
   "imports": {
     "@std/encoding": "jsr:@std/encoding@1",
+    "qr": "jsr:@paulmillr/qr@0.4.2",
     "valibot": "jsr:@valibot/valibot@1"
   },
   "tasks": {

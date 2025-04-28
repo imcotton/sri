@@ -30,15 +30,33 @@ function encode (format: Format) {
 
     return function (source: ArrayBuffer) {
 
+        const data = new Uint8Array(source);
+
         if (format === 'base64') {
-            return encodeBase64(source);
+
+            // @ts-ignore https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array/toBase64
+            const result = data.toBase64?.();
+
+            if (typeof result === 'string') {
+                return result;
+            }
+
+            return encodeBase64(data);
+
         }
 
         if (format === 'base58') {
-            return encodeBase58(source);
+            return encodeBase58(data);
         }
 
-        return encodeHex(source);
+        // @ts-ignore https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array/toHex
+        const result = data.toHex?.();
+
+        if (typeof result === 'string') {
+            return result;
+        }
+
+        return encodeHex(data);
 
     };
 

@@ -22,11 +22,20 @@ function encode (format: Format) {
 
     return async function (source: ArrayBuffer) {
 
+        const data = new Uint8Array(source);
+
         if (format === 'base64') {
+
+            // @ts-ignore https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array/toBase64
+            const result = data.toBase64?.();
+
+            if (typeof result === 'string') {
+                return result;
+            }
 
             const { encodeBase64 } = await import('@std/encoding/base64');
 
-            return encodeBase64(source);
+            return encodeBase64(data);
 
         }
 
@@ -34,13 +43,20 @@ function encode (format: Format) {
 
             const { encodeBase58 } = await import('@std/encoding/base58');
 
-            return encodeBase58(source);
+            return encodeBase58(data);
 
+        }
+
+        // @ts-ignore https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array/toHex
+        const result = data.toHex?.();
+
+        if (typeof result === 'string') {
+            return result;
         }
 
         const { encodeHex } = await import('@std/encoding/hex');
 
-        return encodeHex(source);
+        return encodeHex(data);
 
     };
 

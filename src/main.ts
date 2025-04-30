@@ -49,14 +49,20 @@ function encode (format: Format) {
             return encodeBase58(data);
         }
 
-        // @ts-ignore https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array/toHex
-        const result = data.toHex?.();
+        if (format === 'hex') {
 
-        if (typeof result === 'string') {
-            return result;
+            // @ts-ignore https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array/toHex
+            const result = data.toHex?.();
+
+            if (typeof result === 'string') {
+                return result;
+            }
+
+            return encodeHex(data);
+
         }
 
-        return encodeHex(data);
+        throw new Error(`unknown format: ${ format }`);
 
     };
 

@@ -3,3 +3,4 @@ deno.lock
 npm/
 coverage/
 node_modules/
+dist/

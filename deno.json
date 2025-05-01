@@ -10,6 +10,7 @@
   },
   "tasks": {
     "dev": "deno run -E -R --allow-run npm:esbuild@0.25.3 src/app.ts --bundle --format=esm --packages=external --outdir=pages --servedir=pages",
+    "build": "rm -rf ./dist && ./tools/build.ts",
     "test": "deno test --allow-net --allow-read ./tests"
   },
   "compilerOptions": {

@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>SRI Shasum</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link   crossorigin="anonymous"
+            rel="stylesheet"
+            href="https://raw.esm.sh/@picocss/pico@2.1.1/css/pico.min.css"
+            integrity="sha256-+8mmP8n8n3LRL9f8mAbhH6n3euT5ytFGsnADoRGbo9s="
+    />
+
+    <script type="importmap">
+        {
+            "imports": {
+                "@std/encoding/": "https://esm.sh/jsr/@std/encoding@1/",
+                "qr": "https://esm.sh/jsr/@paulmillr/qr@0.4.2"
+            }
+        }
+    </script>
+
+    <script type="module">
+
+        import { make, byId, removeAttribute } from './app.js';
+
+        byId('form-inputs', form => make(form, {
+
+            error: console.error,
+
+            next ({ hash, qr: { svg } }) {
+
+                byId('hash', elm => elm.innerText = hash);
+
+                byId('figure', elm => elm.innerHTML = svg);
+
+                byId('output', removeAttribute('hidden'));
+
+                byId('copy', removeAttribute('disabled'));
+                byId('copy', elm => elm.dataset.content = hash);
+
+            },
+
+        }));
+
+    </script>
+
+    <style>
+
+        html {
+
+            height: 100%;
+
+            & body {
+
+                display: flex;
+                flex-direction: column;
+                min-height: 100vh;
+                min-height: 100svh;
+
+                & > main {
+                    flex: 1;
+                }
+
+            }
+
+        }
+
+        [x-format] {
+
+            & label {
+                display: inline-block;
+                margin-right: 1.4em;
+            }
+
+            & legend {
+                @media screen and (min-width: 768px) {
+                    margin-bottom: 1.2em;
+                }
+            }
+
+        }
+
+        [x-algo] {
+
+            align-items: baseline;
+            display: flex;
+
+            & [x-prefix] {
+                flex: 1 8em;
+            }
+
+        }
+
+        [x-opts] {
+
+            column-gap: 2em;
+
+            @media screen and (min-width: 768px) {
+                margin: 2em 0;
+                grid-template-columns: 3fr 4fr;
+            }
+
+        }
+
+        [x-actions] {
+
+            margin: 2em 0;
+
+            & button, [role=group] {
+                margin-bottom: 0;
+            }
+
+            & [x-major] {
+
+                display: flex;
+                gap: 1em;
+
+                & [x-update] {
+                    flex: 1
+                }
+
+            }
+
+        }
+
+        [x-qr] {
+            margin-bottom: 0;
+        }
+
+        [x-info] {
+            display: flex;
+            justify-items: center;
+            align-items: baseline;
+            justify-content: space-evenly;
+        }
+
+        #hash {
+            overflow-wrap: anywhere;
+            display: block;
+            font-size: large;
+            padding: 1.2em 1em;
+            width: 100%;
+            color: var(--pico-form-element-valid-border-color);
+        }
+
+        #output {
+
+            align-items: start;
+
+            @media screen and (min-width: 768px) {
+                grid-template-columns: 1fr 3fr;
+            }
+
+        }
+
+        #figure {
+
+            text-align: center;
+
+            & svg {
+                max-height: 12em;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+    <main class="container">
+
+        <article x-root>
+
+            <form method="post" id="form-inputs">
+
+                <fieldset role="group">
+
+                    <input type="file" name="file" required>
+
+                </fieldset>
+
+                <div class="grid" x-opts>
+
+                    <div x-algo>
+
+                        <label x-prefix>
+                            <input type="checkbox" name="prefix" />
+                            prefix
+                        </label>
+
+                        <fieldset>
+
+                            <legend><strong>Algorithm:</strong></legend>
+
+                            <select name="algorithm">
+                                <option value="1"           >SHA-1</option>
+                                <option value="256" selected>SHA-256</option>
+                                <option value="384"         >SHA-384</option>
+                                <option value="512"         >SHA-512</option>
+                            </select>
+
+                        </fieldset>
+
+                    </div>
+
+                    <fieldset x-format>
+
+                        <legend><strong>Format:</strong></legend>
+
+                        <label>
+                            <input type="radio" name="format" value="base64" checked />
+                            base64
+                        </label>
+
+                        <label>
+                            <input type="radio" name="format" value="base58" />
+                            base58
+                        </label>
+
+                        <label>
+                            <input type="radio" name="format" value="hex" />
+                            hex
+                        </label>
+
+                    </fieldset>
+
+                </div>
+
+                <div class="grid" x-actions>
+
+                    <div role="group">
+
+                        <button type="button"
+                                class="outline contrast"
+                                onclick="window.location.reload()"
+                        ><strong>reload page</strong></button>
+
+                        <button type="reset"
+                                class="outline secondary"
+                        ><strong>reset form</strong></button>
+
+                    </div>
+
+                    <div x-major>
+
+                        <button type="submit" x-update>update</button>
+
+                        <button type="button" disabled
+                                id="copy"
+                                class="outline"
+                                onclick="navigator.clipboard.writeText(this.dataset.content)"
+                        >copy</button>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+            <footer class="grid" id="output" hidden>
+
+                <details x-qr>
+
+                    <summary
+                        role="button"
+                        class="outline"
+                        onclick="setTimeout(() => {
+
+                            this.scrollIntoView({ behavior: 'smooth' });
+
+                        }, 10)"
+                    >QR code</summary>
+
+                    <div id="figure"></div>
+
+                </details>
+
+                <code id="hash"></code>
+
+            </footer>
+
+        </article>
+
+    </main>
+
+    <footer>
+        <div class="container">
+
+            <hr />
+
+            <div class="grid" x-info>
+
+                <span>
+                    <a href="https://jsr.io/@imcotton/sri" target="_blank">
+                        <strong>source code</strong>
+                    </a>
+                </span>
+
+                <span>
+                    version: <code x-ver>__VERSION__</code>
+                </span>
+
+            </div>
+
+        </div>
+    </footer>
+</body>
+
+</html>
+

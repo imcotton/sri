@@ -26,7 +26,5 @@ jobs:
         run: deno publish --dry-run
 
       - name: Run tests
-        run: |-
-          deno task test --parallel --coverage --quiet
-          deno coverage --include=./src
+        run: deno task test --parallel --coverage --quiet
 

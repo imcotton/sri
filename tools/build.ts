@@ -4,8 +4,6 @@ import { build, stop } from 'npm:esbuild@0.25.3';
 
 import { denoPlugins } from 'jsr:@luca/esbuild-deno-loader@0.11.1';
 
-import pkg from '../deno.json' with { type: 'json' };
-
 import * as u from './_utils.ts';
 
 
@@ -96,12 +94,6 @@ async function main ({
             }, null, 2),
 
         `</script>`, '\n'))
-
-        .then(u.alert(`<code x-ver>`,
-
-            pkg.version,
-
-        `</code>`))
 
         .then(u.write_text_file(
 

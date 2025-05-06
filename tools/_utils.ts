@@ -2,6 +2,8 @@ import * as v from 'valibot';
 
 import { main as shasum, type Algorithm } from '../src/main.ts';
 
+export { csp_hashes } from './_csp.ts';
+
 
 
 
@@ -198,11 +200,11 @@ export function alert (
 
 ) {
 
+    const slice = mark(open, close);
+
     return function (origin: string) {
 
-        const up = origin.indexOf(open) + open.length;
-        const down = origin.indexOf(close, up);
-        const middle = origin.slice(up, down);
+        const { up, middle, down } = slice(origin);
 
         return Array.of(
 
@@ -211,6 +213,30 @@ export function alert (
             origin.slice(down),
 
         ).join(by);
+
+    };
+
+}
+
+
+
+
+
+export function mark (
+
+        open: string,
+        close: string,
+
+) {
+
+    return function (origin: string) {
+
+        const i = origin.indexOf(open);
+        const up = i + open.length;
+        const down = origin.indexOf(close, up);
+        const middle = origin.slice(up, down);
+
+        return { i, up, middle, down };
 
     };
 

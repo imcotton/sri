@@ -130,7 +130,10 @@
         }
 
         [x-info] {
-            text-align: center;
+            display: flex;
+            justify-items: center;
+            align-items: baseline;
+            justify-content: space-evenly;
         }
 
         #hash {
@@ -293,18 +296,17 @@
 
             <hr />
 
-            <div x-info>
+            <div class="grid" x-info>
 
-                <a  href="https://jsr.io/@imcotton/sri"
-                    title="source code on JSR"
-                    target="_blank"
-                >
-                    <img    src="https://jsr.io/badges/@imcotton/sri"
-                            crossorigin="anonymous"
-                            alt="JSR badge"
-                            loading="lazy"
-                    />
-                </a>
+                <span>
+                    <a href="https://jsr.io/@imcotton/sri" target="_blank">
+                        <strong>source code</strong>
+                    </a>
+                </span>
+
+                <span>
+                    version: <code x-ver>__VERSION__</code>
+                </span>
 
             </div>
 

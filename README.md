@@ -6,6 +6,15 @@ generate **Subresource Integrity** (SRI)
 
 
 
+## Web
+
+- https://sri-shasum.js.org (GitHub Pages)
+- https://sri-shasum.pages.dev (Cloudflare Pages)
+
+
+
+
+
 ## CLI
 
 ```

@@ -17,9 +17,20 @@ generate **Subresource Integrity** (SRI)
 
 ## CLI
 
+> onetime run
+
+```
+deno run jsr:@imcotton/sri
+```
+> global install
+
+```
+deno install --global jsr:@imcotton/sri
+```
+
 ```
 SYNOPSIS
-       [OPTIONS] remote URL, local file path, or from stdin (-)
+       sri [OPTIONS] remote URL, local file path, or from stdin (-)
 
 OPTIONS
        --base64 (default)

@@ -6,6 +6,8 @@ import { denoPlugins } from 'jsr:@luca/esbuild-deno-loader@0.11.1';
 
 import pkg from '../deno.json' with { type: 'json' };
 
+import * as csp from './_csp.ts';
+
 import * as u from './_utils.ts';
 
 
@@ -97,33 +99,13 @@ async function main ({
 
         `</script>`, '\n'))
 
-        .then(html => u.csp_hashes(html)
+        .then(html => csp.hashes(html)
 
-            .then(({ scripts, styles, unsafe_hashes }) => ({
+            .then(csp.content)
 
-                ['default-src']: [ 'none' ],
-                ['form-action']: [ 'self' ],
-                ['img-src']:     [ 'self', 'data:' ],
-                ['style-src']:   [ 'self', ...styles ],
+            .then(content => u.alert(`http-equiv="Content-Security-Policy" content="`,
 
-                ['script-src']: Array.of('self')
-                    .concat(scripts)
-                    .concat('unsafe-hashes', unsafe_hashes)
-                ,
-
-            }))
-
-            .then(dict => Object.entries(dict).map(function ([ key, xs ]) {
-
-                const refined = xs.map(x => x === 'data:' ? x : `'${ x }'`);
-
-                return Array.of(key).concat(refined).join(' ');
-
-            }))
-
-            .then(list => u.alert(`http-equiv="Content-Security-Policy" content="`,
-
-                list.join('; '),
+                content,
 
             `" />`))
 

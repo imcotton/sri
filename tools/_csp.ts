@@ -12,7 +12,7 @@ const text = new TextEncoder();
 
 
 
-export async function csp_hashes (html: string) {
+export async function hashes (html: string) {
 
     const collect = hashes_from(scrape(html));
 
@@ -35,6 +35,36 @@ export async function csp_hashes (html: string) {
     ]);
 
     return { scripts, styles, unsafe_hashes };
+
+}
+
+
+
+
+
+export function content (res : Awaited<ReturnType<typeof hashes>>) {
+
+    const { scripts, styles, unsafe_hashes } = res;
+
+    const dict = {
+        ['default-src']: [ 'none' ],
+        ['form-action']: [ 'self' ],
+        ['img-src']:     [ 'self', 'data:' ],
+        ['style-src']:   [ 'self', ...styles ],
+        ['script-src']:  [
+            'self', ...scripts, 'unsafe-hashes', ...unsafe_hashes,
+        ],
+    };
+
+    const list = Object.entries(dict).map(function ([ key, xs ]) {
+
+        const refined = xs.map(x => x === 'data:' ? x : `'${ x }'`);
+
+        return Array.of(key).concat(refined).join(' ');
+
+    });
+
+    return list.join('; ');
 
 }
 

@@ -2,8 +2,6 @@ import * as v from 'valibot';
 
 import { main as shasum, type Algorithm } from '../src/main.ts';
 
-export { csp_hashes } from './_csp.ts';
-
 
 
 

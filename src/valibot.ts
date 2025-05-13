@@ -32,11 +32,13 @@ export const http_https = v.union([
 
 
 
-export const max_time = v.pipe(
+export const max_time = v.message(v.pipe(
+
     v.string(),
     v.digits(),
     v.transform(Number.parseInt),
-);
+
+), 'invalid max time');
 
 
 

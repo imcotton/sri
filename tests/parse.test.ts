@@ -41,6 +41,28 @@ Deno.test('with url on end', function () {
 
 
 
+Deno.test('on invalid --max-time', function () {
+
+    const list = [
+        '4.2',
+        '1-2',
+        'wat',
+    ];
+
+    for (const m of list) {
+
+        const run = () => parse([ '--max-time', m ]);
+
+        ast.assertThrows(run, Error, 'invalid max time', `on: ${ m }`);
+
+    }
+
+});
+
+
+
+
+
 Deno.test('read local file', async function () {
 
     const path = 'README.md';

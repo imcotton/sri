@@ -1,5 +1,7 @@
 #!/usr/bin/env -S deno run --allow-run -E -R -N=raw.esm.sh:443 -W=./dist
 
+import * as fs from 'jsr:@std/fs@1';
+
 import { build, stop } from 'npm:esbuild@0.25.3';
 
 import { denoPlugins } from 'jsr:@luca/esbuild-deno-loader@0.11.1';
@@ -16,18 +18,15 @@ import * as u from './_utils.ts';
 
 async function main ({
 
+        pages = './pages',
         dist = u.concat('./dist'),
-        pages = u.concat('./pages'),
 
 } = {}) {
 
     const dist_assets = dist.slash('./assets');
 
-    await Deno.mkdir(dist_assets.join(), { recursive: true });
-
-    await Deno.copyFile(pages.slash('favicon.ico').join(),
-                         dist.slash('favicon.ico').join(),
-    );
+    await fs.copy(pages, dist.join());
+    await fs.ensureDir(dist_assets.join());
 
     const dist_assets_app = dist_assets.slash('app.js').join();
 
@@ -52,14 +51,14 @@ async function main ({
     const dist_assets_app_hashed = dist_assets.slash(`app.${ checksum }.js`);
     const      assets_app_hashed = dist_assets_app_hashed.tail.join();
 
-    await Deno.copyFile(dist_assets_app,
-                        dist_assets_app_hashed.join(),
+    await fs.copy(  dist_assets_app,
+                    dist_assets_app_hashed.join(),
     );
 
-    const       index_html = 'index.html';
-    const pages_index_html = pages.slash(index_html).join();
+    const      index_html = 'index.html';
+    const dist_index_html = dist.slash(index_html).join();
 
-    await Deno.readTextFile(pages_index_html)
+    await Deno.readTextFile(dist_index_html)
 
         .then(u.parse_pico_css)
 
@@ -67,7 +66,7 @@ async function main ({
 
             const path = dist_assets.slash(folder, version, name);
 
-            await Deno.mkdir(path.init.join(), { recursive: true });
+            await fs.ensureDir(path.init.join());
 
             await u.load_and_verify(remote).then(
 
@@ -75,7 +74,7 @@ async function main ({
 
             );
 
-            return Deno.readTextFile(pages_index_html).then(
+            return Deno.readTextFile(dist_index_html).then(
 
                 u.replace(remote.url, path.tail.join())
 
@@ -121,7 +120,7 @@ async function main ({
 
         .then(u.write_text_file(
 
-            dist.slash(index_html).join()
+            dist_index_html,
 
         ))
 

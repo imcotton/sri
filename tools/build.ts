@@ -102,11 +102,29 @@ async function main ({
 
             .then(csp.content)
 
-            .then(content => u.alert(`http-equiv="Content-Security-Policy" content="`,
+            .then(async function (content) {
 
-                content,
+                const dist_headers = dist.slash('_headers').join();
 
-            `" />`))
+                await Deno.readTextFile(dist_headers)
+
+                    .then(u.alert(`Content-Security-Policy: `,
+
+                        content,
+
+                    `;`))
+
+                    .then(u.write_text_file(dist_headers))
+
+                ;
+
+                return u.alert(`http-equiv="Content-Security-Policy" content="`,
+
+                    content,
+
+                `" />`);
+
+            })
 
             .then(update => update(html))
 

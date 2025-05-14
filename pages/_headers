@@ -5,6 +5,7 @@
   Referrer-Policy: strict-origin-when-cross-origin
   Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
   Permissions-Policy: interest-cohort=(), usb=(), camera=(), gyroscope=(), microphone=(), geolocation=(), accelerometer=()
+  Content-Security-Policy: default-src 'none';
   Cross-Origin-Embedder-Policy: require-corp
   Cross-Origin-Opener-Policy: same-site
   ! Access-Control-Allow-Origin

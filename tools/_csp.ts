@@ -48,7 +48,7 @@ export function content (res : Awaited<ReturnType<typeof hashes>>) {
 
     const dict = {
         ['default-src']: [ 'none' ],
-        ['form-action']: [ 'self' ],
+        ['form-action']: [ 'none' ],
         ['img-src']:     [ 'self', 'data:' ],
         ['style-src']:   [ 'self', ...styles ],
         ['script-src']:  [

@@ -163,7 +163,7 @@ export function concat (...acc: readonly string[]) {
         },
 
         slash (...xs: readonly string[]) {
-            return concat(...acc, ...xs)
+            return concat(...acc, ...xs);
         },
 
     };

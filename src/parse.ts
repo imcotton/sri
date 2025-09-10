@@ -161,6 +161,8 @@ function from_standard (input?: AsyncIterable<Uint8Array<ArrayBuffer>>) {
 
 const from_file = v.pipe(
     v.string(),
-    v.transform(path => () => readFile(pathToFileURL(path))),
+    v.transform(path => () => readFile(pathToFileURL(path)) as Promise<
+        Uint8Array<ArrayBuffer>
+    >),
 );
 

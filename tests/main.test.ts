@@ -74,8 +74,18 @@ Deno.test('smoking npm:semver@7.7.1 -p -a 512 --hex', async function () {
 
 Deno.test('error on fetch', async function () {
 
+    await using server = Deno.serve({ port: 0 }, function () {
+
+        return new Response(null, { status: 404 });
+
+    });
+
+    const { addr: { hostname, port } } = server;
+
+    const task = load(`http://${ hostname }:${ port }`);
+
     await ast.assertRejects(
-        () => main({ task: load('https://example.net/waaaat') }),
+        () => main({ task }),
         Error,
         'error on fetch',
     );

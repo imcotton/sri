@@ -5,7 +5,7 @@
   "license": "MIT",
   "lock": false,
   "imports": {
-    "@std/encoding": "jsr:@std/encoding@1",
+    "@std/encoding": "jsr:@std/encoding@1.0.10",
     "qr": "jsr:@paulmillr/qr@0.5.0",
     "valibot": "jsr:@valibot/valibot@1.1"
   },

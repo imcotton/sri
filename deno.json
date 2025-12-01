@@ -10,7 +10,7 @@
     "valibot": "jsr:@valibot/valibot@1.2.0"
   },
   "tasks": {
-    "dev": "deno run -E -R --allow-run npm:esbuild@0.25.3 src/app.ts --bundle --format=esm --packages=external --outdir=pages --servedir=pages",
+    "dev": "deno run -E -R --allow-run npm:esbuild@0.27.3 src/app.ts --bundle --format=esm --packages=external --outdir=pages --servedir=pages",
     "build": "rm -rf ./dist && ./tools/build.ts",
     "serve": {
       "dependencies": [ "build" ],

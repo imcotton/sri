@@ -2,7 +2,7 @@
 
 import * as fs from 'jsr:@std/fs@1';
 
-import { build, stop } from 'npm:esbuild@0.25.3';
+import { build, stop } from 'npm:esbuild@0.27.3';
 
 import { denoPlugins } from 'jsr:@luca/esbuild-deno-loader@0.11.1';
 
@@ -34,7 +34,7 @@ async function main ({
 
         entryPoints: [ './src/app.ts' ],
         outfile: dist_assets_app,
-        plugins: [ ...denoPlugins() ],
+        plugins: [ ...denoPlugins() ] as never,
         legalComments: 'none',
         format: 'esm',
         bundle: true,

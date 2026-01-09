@@ -189,7 +189,7 @@ export function replace (
 
 
 
-export function alert (
+export function alter (
 
         open: string,
         data: string | ((_: string) => string),

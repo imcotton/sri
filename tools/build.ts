@@ -82,7 +82,7 @@ async function main ({
 
         })
 
-        .then(u.alert(`<script type="importmap">`,
+        .then(u.alter(`<script type="importmap">`,
 
             JSON.stringify({
 
@@ -108,7 +108,7 @@ async function main ({
 
                 await Deno.readTextFile(dist_headers)
 
-                    .then(u.alert(`Content-Security-Policy: `,
+                    .then(u.alter(`Content-Security-Policy: `,
 
                         content,
 
@@ -118,7 +118,7 @@ async function main ({
 
                 ;
 
-                return u.alert(`http-equiv="Content-Security-Policy" content="`,
+                return u.alter(`http-equiv="Content-Security-Policy" content="`,
 
                     content,
 
@@ -130,7 +130,7 @@ async function main ({
 
         )
 
-        .then(u.alert(`<code x-ver>`,
+        .then(u.alter(`<code x-ver>`,
 
             pkg.version,
 

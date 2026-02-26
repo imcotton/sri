@@ -49,7 +49,7 @@ export function content (res : Awaited<ReturnType<typeof hashes>>) {
     const dict = {
         ['default-src']: [ 'none' ],
         ['form-action']: [ 'none' ],
-        ['img-src']:     [ 'self', 'data:' ],
+        ['img-src']:     [ 'self', 'data:', 'blob:' ],
         ['style-src']:   [ 'self', ...styles ],
         ['script-src']:  [
             'self', ...scripts, 'unsafe-hashes', ...unsafe_hashes,
@@ -58,7 +58,7 @@ export function content (res : Awaited<ReturnType<typeof hashes>>) {
 
     const list = Object.entries(dict).map(function ([ key, xs ]) {
 
-        const refined = xs.map(x => x === 'data:' ? x : `'${ x }'`);
+        const refined = xs.map(x => /^(data|blob):/.test(x) ? x : `'${ x }'`);
 
         return Array.of(key).concat(refined).join(' ');
 

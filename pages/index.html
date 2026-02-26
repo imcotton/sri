@@ -33,11 +33,19 @@
 
             error: console.error,
 
-            next ({ hash, qr: { svg } }) {
+            next ({ hash, qr: { blob } }) {
 
                 byId('hash', elm => elm.innerText = hash);
 
-                byId('figure', elm => elm.innerHTML = svg);
+                byId('image', function (img) {
+
+                    if (img.src?.startsWith('blob:')) {
+                        URL.revokeObjectURL(img.src);
+                    }
+
+                    img.src = URL.createObjectURL(blob);
+
+                });
 
                 byId('output', removeAttribute('hidden'));
 
@@ -286,7 +294,9 @@
                         }, 10)"
                     >show QR code</summary>
 
-                    <div id="figure"></div>
+                    <div id="figure">
+                        <img id="image">
+                    </div>
 
                 </details>
 

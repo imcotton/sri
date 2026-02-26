@@ -18,7 +18,7 @@ interface Observer <T> {
 export type Result = {
     hash: string,
     qr: {
-        svg: string,
+        blob: Blob,
     },
 };
 
@@ -43,9 +43,15 @@ export function make (
 
                 const hash = await main(info);
 
-                const svg = encodeQR(hash, 'svg', { optimize: true });
+                const blob = new Blob([
 
-                next({ hash, qr: { svg } });
+                    encodeQR(hash, 'gif', {
+                        scale: 6,
+                    }) as Uint8Array<ArrayBuffer>,
+
+                ], { type: 'image/gif' });
+
+                next({ hash, qr: { blob } });
 
             } catch (cause) {
 

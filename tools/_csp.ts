@@ -50,6 +50,7 @@ export function content (res : Awaited<ReturnType<typeof hashes>>) {
         ['default-src']: [ 'none' ],
         ['form-action']: [ 'none' ],
         ['img-src']:     [ 'self', 'data:', 'blob:' ],
+        ['media-src']:   [ 'self', 'data:' ],
         ['style-src']:   [ 'self', ...styles ],
         ['script-src']:  [
             'self', ...scripts, 'unsafe-hashes', ...unsafe_hashes,

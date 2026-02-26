@@ -43,13 +43,7 @@ export function make (
 
                 const hash = await main(info);
 
-                const blob = new Blob([
-
-                    encodeQR(hash, 'gif', {
-                        scale: 6,
-                    }) as Uint8Array<ArrayBuffer>,
-
-                ], { type: 'image/gif' });
+                const blob = await gen_qr_png(hash);
 
                 next({ hash, qr: { blob } });
 
@@ -120,6 +114,47 @@ function hook (form: unknown, { next, error }: Observer<Info>) {
     }, { signal });
 
     return () => abort();
+
+}
+
+
+
+
+
+async function gen_qr_png (txt: string, scale = 6) {
+
+    const bitmap = await createImageBitmap(new Blob([
+
+        encodeQR(txt, 'gif', { scale }) as BufferSource,
+
+    ], { type: 'image/gif' }));
+
+    try {
+
+        return await convert_png(bitmap);
+
+    } finally {
+
+        bitmap.close();
+    }
+
+}
+
+
+
+
+
+async function convert_png (bitmap: ImageBitmap) {
+
+    const canvas = new OffscreenCanvas(bitmap.width, bitmap.height);
+
+    const ctx = canvas.getContext('bitmaprenderer', { alpha: false });
+
+        assert(ctx);
+
+    ctx.transferFromImageBitmap(bitmap);
+
+    return await canvas.convertToBlob({ type: 'image/png' });
 
 }
 

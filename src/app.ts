@@ -121,13 +121,28 @@ function hook (form: unknown, { next, error }: Observer<Info>) {
 
 
 
-async function gen_qr_png (txt: string, scale = 6) {
+async function gen_qr_png (
 
-    const bitmap = await createImageBitmap(new Blob([
+        txt: string,
+        scale = 6,
+        resizeWidth = 512,
+        resizeHeight = resizeWidth,
+
+) {
+
+    const blob = new Blob([
 
         encodeQR(txt, 'gif', { scale }) as BufferSource,
 
-    ], { type: 'image/gif' }));
+    ], { type: 'image/gif' });
+
+    const bitmap = await createImageBitmap(blob, {
+
+        resizeWidth,
+        resizeHeight,
+        resizeQuality: 'pixelated',
+
+    });
 
     try {
 

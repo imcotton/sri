@@ -78,6 +78,10 @@ export interface Info {
     format?: Format;
     prefix?: boolean;
     checksum?: string;
+    refine?:
+        | ((source: BufferSource) =>         BufferSource)
+        | ((source: BufferSource) => Promise<BufferSource>)
+    ;
 }
 
 
@@ -87,6 +91,7 @@ export interface Info {
 export async function main ({
 
         task,
+        refine,
         algorithm = '256',
         format = 'base64',
         prefix = false,
@@ -97,7 +102,7 @@ export async function main ({
     const algo = normalize(algorithm);
 
     const output = await task()
-        .then(digest(algo))
+        .then(refine ?? digest(algo))
         .then(encode(format))
     ;
 

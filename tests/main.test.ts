@@ -1,7 +1,7 @@
 import * as ast from 'jsr:@std/assert@1';
 
 import { main } from '../src/main.ts';
-import { load_by } from '../src/parse.ts';
+import { load_by, refine } from '../src/parse.ts';
 import v from '../src/valibot.ts';
 
 
@@ -15,7 +15,7 @@ Deno.test('smoking npm:semver@7.7.1 -p -a 512', async function () {
 
     const task = load(url);
 
-    const res = await main({ task, algorithm: '512', prefix: true });
+    const res = await main({ task, refine, algorithm: '512', prefix: true });
 
     ast.assertStrictEquals(res, integrity);
 
@@ -38,7 +38,7 @@ Deno.test('smoking npm:semver@7.7.1 -p -a 512 --base58', async function () {
 
     const task = load(url);
 
-    const res = await main({ task, algorithm: '512', format: 'base58' });
+    const res = await main({ task, refine, algorithm: '512', format: 'base58' });
 
     ast.assertStrictEquals(res, integrity);
 
@@ -62,7 +62,7 @@ Deno.test('smoking npm:semver@7.7.1 -p -a 512 --hex', async function () {
 
     const task = load(url);
 
-    const res = await main({ task, checksum, algorithm: '512', format: 'hex' });
+    const res = await main({ task, refine, checksum, algorithm: '512', format: 'hex' });
 
     ast.assertStrictEquals(res, checksum);
 

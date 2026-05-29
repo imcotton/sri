@@ -18,6 +18,7 @@
     },
     "test": "deno test --allow-net --allow-read ./tests"
   },
+  "minimumDependencyAge": "P3D",
   "compilerOptions": {
     "lib": [
       "dom",

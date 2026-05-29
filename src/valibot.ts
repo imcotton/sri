@@ -5,15 +5,6 @@ export * as default from 'valibot';
 
 
 
-export const algorithm = v.picklist(
-    [ '1', '256', '384', '512' ],
-    'invalid algorithm',
-);
-
-
-
-
-
 export const format = v.picklist(
     [ 'base64', 'base58', 'hex' ],
     'invalid format',

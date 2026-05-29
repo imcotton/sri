@@ -26,6 +26,20 @@ export function digest (
 
 
 
+function normalize (algo: string) {
+
+    if (/^[0-9]+$/.test(algo)) {
+        return `SHA-${ algo }`;
+    }
+
+    return algo.toUpperCase();
+
+}
+
+
+
+
+
 function encode (format: Format) {
 
     return function (source: ArrayBuffer) {
@@ -80,7 +94,7 @@ export async function main ({
 
 }: Info): Promise<string> {
 
-    const algo = `SHA-${ algorithm }`;
+    const algo = normalize(algorithm);
 
     const output = await task()
         .then(digest(algo))

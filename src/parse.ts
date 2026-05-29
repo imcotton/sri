@@ -1,7 +1,9 @@
 import { parseArgs, type ParseArgsConfig } from 'node:util';
+import { createReadStream } from 'node:fs';
 import { pathToFileURL } from 'node:url';
-import { readFile } from 'node:fs/promises';
-import { arrayBuffer } from 'node:stream/consumers';
+import { createHash } from 'node:crypto';
+import { pipeline } from 'node:stream/promises';
+import type { PipelineSource } from 'node:stream';
 
 import v, * as w from './valibot.ts';
 import type { Format, Info } from './main.ts';
@@ -58,8 +60,8 @@ export function parse (
 
     }, void 0 as Format | undefined);
 
-    return format ? { ...rest, format, task }
-                  : { ...rest,         task }
+    return format ? { ...rest, format, task, refine }
+                  : { ...rest,         task, refine }
     ;
 
 }
@@ -108,24 +110,49 @@ const options = {
 
 
 
+export function refine <T> (a: T) {
+
+    return a;
+
+}
+
+
+
+
+
+async function digest <T> (algo: string, source: PipelineSource<T>) {
+
+    const hash = createHash(algo.replace('SHA-', 'SHA'));
+
+    await pipeline(source, hash);
+
+    return new Uint8Array(hash.digest());
+
+}
+
+
+
+
+
 export function load_by (max_time = 60)  {
 
     return v.pipe(
 
         w.http_https,
 
-        v.transform(url => async function () {
+        v.transform(url => async function (algo: string) {
 
             const res = await fetch(url, {
                 signal: AbortSignal?.timeout(max_time * 1000),
             });
 
-            if (res.ok !== true) {
-                await res.body?.cancel();
-                throw new Error('error on fetch');
+            if (res.ok && res.body) {
+                return digest(algo, res.body);
             }
 
-            return res.arrayBuffer();
+            await res.body?.cancel();
+
+            throw new Error('error on fetch');
 
         }),
 
@@ -143,11 +170,11 @@ function from_standard (input?: AsyncIterable<Uint8Array<ArrayBuffer>>) {
 
         v.optional(v.literal('-')),
 
-        v.transform(() => async function () {
+        v.transform(() => async function (algo: string) {
 
             v.assert(w.exist(), input);
 
-            return await arrayBuffer(input);
+            return await digest(algo, input);
 
         }),
 
@@ -161,8 +188,9 @@ function from_standard (input?: AsyncIterable<Uint8Array<ArrayBuffer>>) {
 
 const from_file = v.pipe(
     v.string(),
-    v.transform(path => () => readFile(pathToFileURL(path)) as Promise<
-        Uint8Array<ArrayBuffer>
-    >),
+    v.transform(path => (algo: string) => digest(
+        algo,
+        createReadStream(pathToFileURL(path)),
+    )),
 );
 

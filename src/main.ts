@@ -42,9 +42,11 @@ function normalize (algo: string) {
 
 function encode (format: Format) {
 
-    return function (source: ArrayBuffer) {
+    return function (source: BufferSource) {
 
-        const data = new Uint8Array(source);
+        const data = new Uint8Array(
+            ArrayBuffer.isView(source) ? source.buffer : source
+        );
 
         if (format === 'base64') {
             return data.toBase64?.() ?? encodeBase64(data);

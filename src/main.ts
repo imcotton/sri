@@ -33,16 +33,7 @@ function encode (format: Format) {
         const data = new Uint8Array(source);
 
         if (format === 'base64') {
-
-            // @ts-ignore https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array/toBase64
-            const result = data.toBase64?.();
-
-            if (typeof result === 'string') {
-                return result;
-            }
-
-            return encodeBase64(data);
-
+            return data.toBase64?.() ?? encodeBase64(data);
         }
 
         if (format === 'base58') {

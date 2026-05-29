@@ -28,7 +28,7 @@ export function parse (
 
     const { 'max-time': max_time, ...rest } = v.parse(v.object({
 
-        algorithm:  v.exactOptional(w.algorithm),
+        algorithm:  v.exactOptional(v.string()),
         'max-time': v.exactOptional(w.max_time),
         checksum:   v.exactOptional(v.string()),
         prefix:     v.exactOptional(v.boolean()),

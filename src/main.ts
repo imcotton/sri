@@ -70,11 +70,9 @@ function encode (format: Format) {
 
 export type Format = 'base64' | 'base58' | 'hex';
 
-export type Algorithm = '1' | '256' | '384' | '512';
-
 export interface Info {
     task: () => Promise<BufferSource>;
-    algorithm?: Algorithm;
+    algorithm?: string;
     format?: Format;
     prefix?: boolean;
     checksum?: string;

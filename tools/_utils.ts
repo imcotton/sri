@@ -1,6 +1,6 @@
 import * as v from 'valibot';
 
-import { main as shasum, type Algorithm } from '../src/main.ts';
+import { main as shasum } from '../src/main.ts';
 
 
 
@@ -35,7 +35,7 @@ export function parse_pico_css (str: string) {
 export function calculate ({ size, algorithm }: {
 
         size: number,
-        algorithm: Algorithm,
+        algorithm: string,
 
 }) {
 
@@ -78,7 +78,7 @@ export async function load_and_verify ({ url, checksum, algorithm }: {
 
         url: string,
         checksum: string,
-        algorithm: Algorithm,
+        algorithm: string,
 
 }) {
 

@@ -73,7 +73,7 @@ function encode (format: Format) {
 export type Format = 'base64' | 'base58' | 'hex';
 
 export interface Info {
-    task: () => Promise<BufferSource>;
+    task: (algo: string) => Promise<BufferSource>;
     algorithm?: string;
     format?: Format;
     prefix?: boolean;
@@ -101,7 +101,7 @@ export async function main ({
 
     const algo = normalize(algorithm);
 
-    const output = await task()
+    const output = await task(algo)
         .then(refine ?? digest(algo))
         .then(encode(format))
     ;

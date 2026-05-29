@@ -41,16 +41,7 @@ function encode (format: Format) {
         }
 
         if (format === 'hex') {
-
-            // @ts-ignore https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array/toHex
-            const result = data.toHex?.();
-
-            if (typeof result === 'string') {
-                return result;
-            }
-
-            return encodeHex(data);
-
+            return data.toHex?.() ?? encodeHex(data);
         }
 
         throw new Error(`unknown format: ${ format }`);

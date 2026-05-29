@@ -12,13 +12,13 @@ const { crypto: webcrypto } = globalThis;
 
 
 
-function digest (algorithm: string) {
+export function digest (
 
-    return function (source: BufferSource) {
+        algorithm: string,
 
-        return webcrypto.subtle.digest(algorithm, source);
+): (source: BufferSource) => Promise<ArrayBuffer> {
 
-    };
+    return source => webcrypto.subtle.digest(algorithm, source);
 
 }
 

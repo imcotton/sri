@@ -125,6 +125,23 @@ Deno.test('error on fetch', async function () {
 
 
 
+Deno.test('throw on wrong encoding format', async function () {
+
+    const task = () => Promise.resolve(Uint8Array.of(42));
+
+    await ast.assertRejects(
+        // @ts-expect-error for assert rejection
+        () => main({ task, format: 'wat' }),
+        Error,
+        'unknown format: wat',
+    );
+
+});
+
+
+
+
+
 Deno.test('checksum FAILED', async function () {
 
     const sample = crypto.getRandomValues(new Uint8Array(42));

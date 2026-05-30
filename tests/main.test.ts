@@ -77,7 +77,7 @@ Deno.test('SHA3-256 from crypto of both web and node', async function () {
     const algorithm = 'SHA3-256';
     const data = Uint8Array.of(42);
 
-    await using server = Deno.serve({ port: 0 }, function () {
+    await using server = Deno.serve({ onListen, port: 0 }, function () {
 
         return new Response(data, { status: 200 });
 
@@ -103,7 +103,7 @@ Deno.test('SHA3-256 from crypto of both web and node', async function () {
 
 Deno.test('error on fetch', async function () {
 
-    await using server = Deno.serve({ port: 0 }, function () {
+    await using server = Deno.serve({ onListen, port: 0 }, function () {
 
         return new Response(null, { status: 404 });
 
@@ -151,4 +151,6 @@ Deno.test('checksum FAILED', async function () {
 
 
 const load = v.parser(load_by());
+
+const onListen = () => {};
 

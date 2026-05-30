@@ -58,11 +58,9 @@ export function parse (
 
         return acc;
 
-    }, void 0 as Format | undefined);
+    }, 'hex' as Format);
 
-    return format ? { ...rest, format, task, refine }
-                  : { ...rest,         task, refine }
-    ;
+    return { ...rest, format, task, refine };
 
 }
 

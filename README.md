@@ -33,9 +33,9 @@ SYNOPSIS
        sri [OPTIONS] remote URL, local file path, or from stdin (-)
 
 OPTIONS
-       --base64 (default)
+       --base64
        --base58
-       --hex
+       --hex (default)
 
        -a, --algorithm   SHA-n, one of: 1, 256 (default), 384, 512.
        -c, --checksum    the checksum to be verified.

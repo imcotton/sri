@@ -72,6 +72,35 @@ Deno.test('smoking npm:semver@7.7.1 -p -a 512 --hex', async function () {
 
 
 
+Deno.test('SHA3-256 from crypto of both web and node', async function () {
+
+    const algorithm = 'SHA3-256';
+    const data = Uint8Array.of(42);
+
+    await using server = Deno.serve({ port: 0 }, function () {
+
+        return new Response(data, { status: 200 });
+
+    });
+
+    const { addr: { hostname, port } } = server;
+    const url = `http://${ hostname }:${ port }`;
+
+    const [ web_crypto, node_crypto ] = await Promise.all([
+
+        main({ algorithm, task: () => Promise.resolve(data) }),
+        main({ algorithm, task: load(url), refine }),
+
+    ]);
+
+    ast.assertStrictEquals(web_crypto, node_crypto);
+
+});
+
+
+
+
+
 Deno.test('error on fetch', async function () {
 
     await using server = Deno.serve({ port: 0 }, function () {

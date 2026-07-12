@@ -141,7 +141,7 @@ export function load_by (max_time = 60)  {
         v.transform(url => async function (algo: string) {
 
             const res = await fetch(url, {
-                signal: AbortSignal?.timeout(max_time * 1000),
+                signal: AbortSignal.timeout?.(max_time * 1000),
             });
 
             if (res.ok && res.body) {

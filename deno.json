@@ -1,5 +1,5 @@
 {
-  "$schema": "https://raw.esm.sh/gh/denoland/deno@v2.8.1/cli/schemas/config-file.v1.json",
+  "$schema": "https://raw.esm.sh/gh/denoland/deno@v2.9.7/cli/schemas/config-file.v1.json",
   "name": "@imcotton/sri",
   "version": "0.13.0",
   "license": "MIT",
